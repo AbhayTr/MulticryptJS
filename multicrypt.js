@@ -221,6 +221,16 @@ class End2End
         return inv;
     }
 
+    utf8(s)
+    {
+        return unescape(encodeURIComponent(s));
+    }
+
+    deutf8(s)
+    {
+        return decodeURIComponent(escape(s));
+    }
+
     hexlify(str)
     {
         var result = '';
@@ -246,14 +256,14 @@ class End2End
 
     compress_string(string)
     {
-        return BigInt(parseInt(this.hexlify(encodeURI(string)), 16));
+        return BigInt("0x" + this.hexlify(this.utf8(string)));
     }
     
     deflate_string(number)
     {
         var number_string = number.toString(16);
-        var encoded_bytes = encodeURI(number_string);
-        return decodeURI(this.unhexlify(encoded_bytes));
+        var encoded_bytes = this.utf8(number_string);
+        return this.deutf8(this.unhexlify(encoded_bytes));
     }
 
     compress_number(number)
