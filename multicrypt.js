@@ -127,7 +127,7 @@ class End2End
                 var fresh_keys = this.get_keys();
                 this.private_key = fresh_keys.private;
                 this.public_key = fresh_keys.public;
-                if (this.save)
+                if (this.save == true)
                 {
                     localStorage.setItem("private_key", this.private_key);
                     localStorage.setItem("public_key", this.public_key);
@@ -136,7 +136,7 @@ class End2End
         }
         else
         {
-            if (this.save)
+            if (this.save == true)
             {
                 localStorage.setItem("private_key", this.private_key);
                 localStorage.setItem("public_key", this.public_key);
