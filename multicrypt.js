@@ -102,19 +102,19 @@ class End2End
                 this.public_key = parameters.public_key;
                 this.private_key = parameters.private_key;
             }
-            if (parameters.save)
+            if (parameters.save != null && parameters.save != undefined)
             {
                 this.save = parameters.save;
             }
-            if (parameters.new)
+            if (parameters.new != null && parameters.new != undefined)
             {
                 this.new_keys = parameters.new;
             }
-            if (parameters.before_generate)
+            if (parameters.before_generate != null && parameters.before_generate != undefined)
             {
                 this.before_keys = parameters.before_generate;
             }
-            if (parameters.on_keys)
+            if (parameters.on_keys != null && parameters.on_keys != undefined)
             {
                 this.after_keys = parameters.on_keys;
             }
