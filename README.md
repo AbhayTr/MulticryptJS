@@ -67,6 +67,8 @@ Optional Parameters that are available are listed below in Parameters section an
 - **private_key (Optional):** Private Key to be used if you want to use existing key (Default: "").
 - **save (Optional):** Should be true/false. Specifies whether the keys have to be stored in local storage or not (Default: true).
 - **new (Optional):** Should be true/false. Specifies whether it should ignore any existing key pairs and generate new key pair or not (Default: false).
+- **before_generate (Optional):** Specifies function which has to be executed before starting the generation of keys that happens on call of constructor if no keys are specified in parameters (Default: Empty function).
+- **on_keys (Optional):** Specifies function which has to be executed after generation of keys that happens on call of constructor if no keys are specified in parameters (Default: Empty function).
 
 ## Functions
 

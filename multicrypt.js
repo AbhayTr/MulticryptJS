@@ -20,6 +20,8 @@ public_key (Optional): Public Key to be used if you want to use existing key (De
 private_key (Optional): Private Key to be used if you want to use existing key (Default: "").
 save (Optional): Should be true/false. Specifies whether the keys have to be stored in the local storage or not (Default: true).
 new (Optional): Should be true/false. Specifies whether it should ignore any existing key pairs and generate new key pair or not (Default: false).
+before_generate (Optional): Specifies function which has to be executed before starting the generation of keys that happens on call of constructor if no keys are specified in parameters (Default: Empty function).
+on_keys (Optional): Specifies function which has to be executed after generation of keys that happens on call of constructor if no keys are specified in parameters (Default: Empty function).
 
 Methods:
 
@@ -91,6 +93,8 @@ class End2End
         this.private_key = "";
         this.save = true;
         this.new_keys = false;
+        this.before_keys = function(){};
+        this.after_keys = function(){};
         if (parameters != null)
         {
             if (parameters.public_key && parameters.private_key)
@@ -105,6 +109,14 @@ class End2End
             if (parameters.new)
             {
                 this.new_keys = parameters.new;
+            }
+            if (parameters.before_generate)
+            {
+                this.before_keys = parameters.before_generate;
+            }
+            if (parameters.on_keys)
+            {
+                this.after_keys = parameters.on_keys;
             }
         }
         if (this.public_key == "" || this.private_key == "")
@@ -367,6 +379,7 @@ class End2End
 
     get_keys()
     {
+        this.before_keys();
         var prime_key_1 = 0;
         var prime_key_2 = 0;
         while (true)
@@ -398,6 +411,7 @@ class End2End
         }
         var public_key = String(public_key_number) + "X" + String(e);
         var private_key = String(this.mod_inverse(e, phi_n)) + "X" + String(public_key_number);
+        this.after_keys();
         return {private: this.compress_number(private_key), public: this.compress_number(public_key)};
     }
 
