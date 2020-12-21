@@ -156,6 +156,17 @@ class End2End
         }
     }
 
+    m(divident, divisor)
+    {
+        var partLength = 10;
+        while (divident.length > partLength)
+        {
+            var part = BigInt(divident.substring(0, partLength));
+            divident = (part % divisor) +  divident.substring(partLength);          
+        }
+        return divident % divisor;
+    }
+
     mod(base, exp, mod)
     {
         if (exp == 0n)
@@ -179,7 +190,7 @@ class End2End
         let multiplier = '';
         while (multiplier.length < differenceLength)
         {
-          multiplier += Math.random().toString().split('.')[1];
+            multiplier += Math.random().toString().split('.')[1];
         }
         multiplier = multiplier.slice(0, differenceLength);
         const divisor = '1' + '0'.repeat(differenceLength);
@@ -202,7 +213,7 @@ class End2End
             for (var divisor_index = 0; divisor_index < this.primes_list.length; divisor_index++)
             {
                 var divisor = BigInt(this.primes_list[divisor_index]);
-                if (prime_number % divisor == 0n && divisor ** 2n <= prime_number)
+                if (this.m(prime_number, divisor) == 0n && divisor ** 2n <= prime_number)
                 {
                     break;
                 }
@@ -216,12 +227,15 @@ class End2End
         var inner_this = this;
         var max_divisions_two = 0n;
         var ec = prime_number - 1n;
-        while (ec % 2n == 0n)
+        while (this.m(ec, 2n) == 0n)
         {
             ec >>= 1n;
             max_divisions_two += 1n;
         }
-        console.assert(2n ** max_divisions_two * ec == prime_number - 1n)
+        if (2n ** max_divisions_two * ec != prime_number - 1n)
+        {
+            return false;
+        }
 
         function trial_composite(round_tester)
         {
@@ -256,13 +270,14 @@ class End2End
         {
             var prev_number_1 = number1;
             number1 = number2;
-            number2 = prev_number_1 % number2;
+            number2 = this.m(prev_number_1, number2);
         }
         return number1 == 1n;
     }
 
     mod_inverse(number1, number2)
     {
+        var inner_this = this;
         function modulo_inverse(number1, number2)
         {
             if (number2 == 0n)
@@ -270,7 +285,7 @@ class End2End
                 return [1n, 0n];
             }
             var q, r, s, t = 0;
-            [q, r] = [number1 / number2, number1 % number2];
+            [q, r] = [number1 / number2, inner_this.m(number1, number2)];
             [s, t] = modulo_inverse(number2, r);
             return [t, s - (q * t)];
         }
